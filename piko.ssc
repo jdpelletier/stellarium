@@ -1,0 +1,112 @@
+//
+// Author: John Pelletier
+// Version: 0.1
+// License: Public Domain
+// Name: Piko o Wākea
+// Description: A demonstration of the Piko o Wākea.
+//
+
+include("i18n.inc");
+
+core.goHome();
+var JD = core.getJDay();
+var white = "#ffffff";
+var blue = "#2596be";
+core.setGuiVisible(false);
+core.setTimeRate(1);
+core.clear("natural");
+LandscapeMgr.setCurrentLandscapeName("Puuhonua", 1)
+core.setDate("2023-03-19T12:30:00", "local");
+core.moveToAltAzi(20, 300, 1);
+core.wait(2);
+label = LabelMgr.labelScreen(tr("Piko o Wākea"), 675, 20, false, 40, white);
+LabelMgr.setLabelShow(label, true);
+core.wait(2);
+label2 = LabelMgr.labelScreen(tr("March 19th, 2023"), 675, 75, false, 30, white);
+LabelMgr.setLabelShow(label2, true);
+core.wait(5);
+LabelMgr.setLabelShow(label, false);
+LabelMgr.setLabelShow(label2, false);
+core.moveToObject("Sun", 3)
+var time = core.getDate(spec="local").substring(11,16);
+LabelMgr.setLabelShow(label, false);
+timelabel = LabelMgr.labelScreen(tr("Time:"), 700, 20, false, 30, white);
+LabelMgr.setLabelShow(timelabel, true);
+label = LabelMgr.labelScreen(tr(`${time}`), 775, 20, false, 30, white);
+LabelMgr.setLabelShow(label, true);
+ConstellationMgr.setFlagIsolateSelected(true);
+core.selectObjectByName("Orion");
+core.wait(4);
+core.moveToSelectedObject(3);
+core.wait(3)
+LandscapeMgr.setFlagAtmosphere(false, 2);
+ConstellationMgr.setFlagLines(true);
+core.wait(2)
+LandscapeMgr.setFlagLandscape(false)
+core.wait(1)
+constLabel = LabelMgr.labelObject("Piko o Wākea", "Orion", true, 20, blue, "S")
+LabelMgr.setLabelShow(constLabel, true);
+polaLabel = LabelMgr.labelObject("Polapola", "Mintaka", true, 15, blue, "E", 10.0);
+LabelMgr.setLabelShow(polaLabel, true);
+kauluakokoLabel = LabelMgr.labelObject("Kauluakoko/Kaʻelo", "Betelgeuse", true, 15, blue, "E", 10.0);
+LabelMgr.setLabelShow(kauluakokoLabel, true);
+puuhonuaLabel = LabelMgr.labelObject("Puʻuhonua ", "Saiph", true, 15, blue, "E", 10.0);
+LabelMgr.setLabelShow(puuhonuaLabel, true);
+core.wait(6);
+LabelMgr.setLabelShow(constLabel, false);
+LabelMgr.setLabelShow(polaLabel, false);
+LabelMgr.setLabelShow(kauluakokoLabel, false);
+LabelMgr.setLabelShow(puuhonuaLabel, false);
+ConstellationMgr.setFlagLines(false);
+LandscapeMgr.setFlagAtmosphere(true, 2);
+LandscapeMgr.setFlagLandscape(true)
+core.wait(2)
+core.moveToAltAzi(20, 270, 1);
+core.wait(2);
+LabelMgr.setLabelShow(constLabel, true);
+ConstellationMgr.setFlagLines(true);
+labelFinal = LabelMgr.labelScreen(tr("Ke ala a ka lā"), 20, 60, false, 20, "#bdbdd3");
+LabelMgr.setLabelShow(labelFinal, true);
+labelFinal2 = LabelMgr.labelScreen(tr("Ke ala a Polapola"), 20, 80, false, 20, "#7c8494");
+LabelMgr.setLabelShow(labelFinal2, true);
+
+for (i=0; i<48; i++)
+{
+    core.setDate("+15 minute");
+    var time = core.getDate(spec="local").substring(11,16);
+    LabelMgr.setLabelShow(label, false);
+    label = LabelMgr.labelScreen(tr(`${time}`), 775, 20, false, 30, white);
+    LabelMgr.setLabelShow(label, true);
+    if (i<24)
+    {
+        var info = core.getObjectInfo("Sun");
+        var az = info.azimuth;
+        var alt = info.altitude;
+        MarkerMgr.markerHorizon(az, alt, true, "gear", "#bdbdd3", 5);     
+    }
+    if (i>2 && i<47)
+    {
+        var info = core.getObjectInfo("Mintaka");
+        var az = info.azimuth;
+        var alt = info.altitude;
+        MarkerMgr.markerHorizon(az, alt, true, "gear", "#7c8494", 5);        
+    }
+    core.wait(.25);    
+}
+
+GridLinesMgr.setFlagEquatorLabeled(false);
+GridLinesMgr.setFlagEquatorLine(true);
+label = LabelMgr.labelScreen(tr("Ke Alanui a ke kuʻukuʻu"), 700, 400, false, 20, blue);
+LabelMgr.setLabelShow(label, true);
+core.wait(5);
+core.moveToAltAzi(70, 180, 8);
+StelMovementMgr.zoomTo(125.0, 8)
+core.wait(15);
+LabelMgr.setLabelShow(labelFinal, false);
+core.clear("natural");
+LabelMgr.deleteAllLabels();
+MarkerMgr.deleteAllMarkers();
+core.setJDay(JD);
+core.goHome();
+core.setGuiVisible(true);
+
